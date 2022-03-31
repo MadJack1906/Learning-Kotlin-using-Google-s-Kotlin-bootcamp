@@ -1,14 +1,34 @@
+import java.time.LocalDateTime
 import java.util.*
 
+private val randomDay = listOf("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY")
+
 fun main() {
-    // Why everthing in kotlin has a value, kotlin.unit
-    val isUnit = println("Hello World")
-    val temperature = 10
-    val isHot = temperature > 50 // if (temperature > 50) true else false
+    // Learn more about functions in Kotlin
+    println(feedTheFish())
+}
 
-    println(isUnit)
-    println(isHot)
-    println("The current temperature in the Philippines is: ${if (temperature > 50) "it is hot" else "it is cold"}")
+fun feedTheFish(){
+    val randomDay = randomDay()
+    val food = fishFood(randomDay)
+    println("Today is $randomDay and the fish ate $food")
+}
 
+fun randomDay(): String {
+    return randomDay[Random().nextInt(randomDay.size)]
+}
 
+fun fishFood(day: String): String{
+    var food: String = ""
+    when (day){
+        "MONDAY" -> food = "flakes"
+        "TUESDAY" -> food = "pellets"
+        "WEDNESDAY" -> food = "redworms"
+        "THURSDAY" -> food = "granules"
+        "FRIDAY" -> food = "mosquitoes"
+        "SATURDAY" -> food = "lettuce"
+        "SUNDAY" -> food = "plankton" // rip plankton lmao
+        else -> food = "nothing, better check if Marnie is open"
+    }
+    return food
 }
