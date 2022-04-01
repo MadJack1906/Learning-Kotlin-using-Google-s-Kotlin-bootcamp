@@ -1,71 +1,78 @@
-import java.time.LocalDateTime
-import java.util.*
+fun main(){
+    // Filters in Kotlin
+    // Filters are used to get an item based on a condition
 
-private val randomDay = listOf("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY")
+    val decoration = listOf("rock", "pagoda", "plastic plant", "alligator", "flower pot")
+    val eager = decoration.filter { it[0] == 'r' } // An example of eager list
+    println("Eager filter: $eager")
 
-fun main() {
-    // Learn more about functions in Kotlin
-    // Default values and compact functions Kotlin
+    // The lazyFilter now holds a sequence of the list and also condition to apply for the sequence
+    val lazyFilter = decoration.asSequence().filter { it[0] == 'p' }
+    println("Lazy filter: ${lazyFilter}")
+    // To force the evaluation of the list use the toList() function
+    val evaluatedList = lazyFilter.toList()
+    println("Lazy evaluated list: $evaluatedList")
 
-    feedTheFish()
-}
-
-fun swim (speed: String = "fast"){
-    println("swimming speed is: $speed")
-}
-
-fun shouldChangeWaterCompact(day: String, temperature: Int = 22, dirty: Int = 20): Boolean {
-    return when {
-        isTooHot(temperature) -> true
-        isDirty(dirty) -> true
-        isDay(day) -> true
-        else -> false
+    // Visualization what's happening when using the asSequence using the 'map()'
+    val lazyMap = decoration.asSequence().map {
+        println("access: $it")
+        it
     }
-}
 
-// Compact Functions
-/*
-    Compact Functions are useful for making the code readable and also the logic
- */
-fun isTooHot(temperature: Int) = temperature > 30
+    println("--------------------------------")
+    println("Lazy Map: lazyMap")
+    println("--------------------------------")
+    println("Lazy Map First element: ${lazyMap.first()}")
+    println("--------------------------------")
+    println("Lazy Map Last element: ${lazyMap.last()}")
+    println("--------------------------------")
+    println("Lazy Map all: ${lazyMap.toList() }}")
+    println("--------------------------------")
 
-fun isDirty(dirty: Int) = dirty > 30
-
-fun isDay(day: String) = day == "Sunday"
-
-fun shouldChangeWater(day: String, temperature: Int = 22, dirty: Int = 20): Boolean{
-    return when{
-        temperature > 30 -> true
-        dirty > 30 -> true
-        day == "Sunday" -> true
-        else -> false
+    // Filtered Lazy List Visualization
+    val filteredLazyListVisualization = decoration.asSequence().filter { it[0] == 'p' }.map {
+        println("filtered access: $it")
+        it
     }
-}
+    println("Visualization of the filtered lazy list")
+    println("--------------------------------")
+    println("Filtered List: ${filteredLazyListVisualization.toList()}")
+    println("--------------------------------")
 
-fun feedTheFish(){
-    val randomDay: String = randomDay()
-    val food: String = fishFood(randomDay)
-    //val shouldChangeWater = shouldChangeWater(randomDay)
-    println("Today is $randomDay and the fish ate $food")
-    println("Change water: ${shouldChangeWater(randomDay)}")
-    println("Change water compact: ${shouldChangeWaterCompact(randomDay)}")
-}
+    /*
+        KeyNote:
+            Filters are used to get an element from a list based on a condition
 
-fun randomDay(): String {
-    return randomDay[Random().nextInt(randomDay.size)]
-}
+            val decoration = listOf("rock", "pagoda", "plastic plant", "alligator", "flower pot")
+            val filter = decoration.filter{ it[0] == 'p' }
 
-fun fishFood(day: String): String{
-    var food: String = ""
-    when (day){
-        "MONDAY" -> food = "flakes"
-        "TUESDAY" -> food = "pellets"
-        "WEDNESDAY" -> food = "redworms"
-        "THURSDAY" -> food = "granules"
-        "FRIDAY" -> food = "mosquitoes"
-        "SATURDAY" -> food = "lettuce"
-        "SUNDAY" -> food = "plankton" // rip plankton lmao
-        else -> food = "nothing, better check if Marnie is open"
-    }
-    return food
+        Eager and Lazy filters
+            Eager list: executes immediately and returns the results or the list
+            Lazy list:  don't start immediately, it will only start once called
+                        Also lazy list lazily evaluates each element of a list from start to end.
+
+            By default, the filter in Kotlin is eager, but you can explicitly set it to
+            lazy by using Sequence: asSequence().
+
+            Example of an Eager List:
+                val eagerList = decoration.filter{ it[0] == 'p' }
+
+            Example of Lazy List:
+                val lazyListSequence = decoration.asSequence().filter{ it[0] == 'p' }
+
+                The asSequence() doesn't actually return the filtered list but rather
+                it contains the sequence of the list and also the condition on what to
+                apply for that sequence. Printing a sequence list will print the memory
+                address of that sequence. To print the list use the toList() function.
+
+            Visualizing the filter list using map()
+                You can visualize the lazy evaluation of the asSequence by using the
+                map function()
+
+                val visualizeLazyList = decoration.filter { it[0] == 'p' }.map {
+                    println("Access: $it")
+                    it
+                }
+
+     */
 }
